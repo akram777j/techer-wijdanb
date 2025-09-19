@@ -1,0 +1,25 @@
+.lesson-btn, .unit-btn {
+  width: 100%;
+  text-align: right;
+  background: #007bff;       /* أزرق */
+  color: #fff;
+  border: 2px solid #007bff; /* إطار أزرق */
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 8px 0;
+}
+
+.lesson-btn:hover, .unit-btn:hover {
+  background: #0056b3;  /* أزرق أغمق عند التمرير */
+  border-color: #0056b3;
+}
+
+.units, .weeks {
+  display: none;        /* مخفية مبدئيًا */
+  margin: 10px 0 15px 0;
+}
+
+
+

@@ -7,64 +7,464 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>منصة المعلمة وجدان أبو زغلة</title>
   <style>
-    body { font-family: 'Tahoma', sans-serif; background:#ffffff; margin:0; padding:0; color:#000000; direction: rtl; }
-    header { background:#000000; color:#ffffff; text-align:center; padding:30px; font-size:40px; font-weight:bold; }
-    nav { background:#000000; text-align:center; padding:20px; margin-bottom:30px; font-size:22px; }
-    nav a { margin:0 20px; color:#ffffff; font-weight:bold; text-decoration:none; font-size:22px; }
-    #content { display:flex; max-width:1200px; margin:20px auto; gap:20px; }
-    #main { flex:3; }
-    #sidebar { flex:1; background:#f2f2f2; padding:15px; border-radius:10px; color:#000; }
-    .slider { position:relative; max-width:100%; margin:20px auto 40px auto; overflow:hidden; border-radius:12px; }
-    .slides { display:flex; }
-    .slides img { width:100%; border-radius:12px; }
-    h2 { color:#000000; font-size:26px; margin:30px 0 15px 0; }
-    section { margin-bottom:40px; }
-    .post { background:#f2f2f2; padding:15px; border-radius:10px; margin-bottom:10px; color:#000000; }
-    footer {
-      background: transparent;
-      color: #000;
-      text-align: center;
-      padding: 10px;
-      font-size: 10px;
-      position: fixed;
-      bottom: 0;
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --light-color: #ecf0f1;
+      --dark-color: #2c3e50;
+      --success-color: #27ae60;
+      --warning-color: #f39c12;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0; 
+      padding: 0; 
+      color: #333; 
+      direction: rtl;
+      min-height: 100vh;
+    }
+
+    header { 
+      background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+      color: white;
+      text-align: center; 
+      padding: 40px 30px;
+      font-size: 2.5rem;
+      font-weight: bold;
+      box-shadow: var(--box-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
       left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>');
+      animation: float 20s infinite linear;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-100px) rotate(360deg); }
+    }
+
+    nav { 
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      text-align: center; 
+      padding: 20px;
+      margin-bottom: 30px; 
+      font-size: 1.1rem;
+      box-shadow: var(--box-shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav a { 
+      margin: 0 25px; 
+      color: var(--primary-color);
+      font-weight: 600; 
+      text-decoration: none; 
+      font-size: 1.1rem;
+      padding: 10px 20px;
+      border-radius: 25px;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    nav a:hover {
+      background: var(--secondary-color);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--secondary-color);
+      transition: var(--transition);
+      transform: translateX(-50%);
+    }
+
+    nav a:hover::after {
       width: 80%;
     }
-    .contact-form input, .contact-form textarea { width:100%; padding:10px; margin:5px 0; border:1px solid #000; border-radius:8px; background:#fff; color:#000; }
-    .contact-form button { background:#000000; color:#ffffff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:16px; }
+
+    #content { 
+      display: flex; 
+      max-width: 1400px; 
+      margin: 30px auto; 
+      gap: 30px;
+      padding: 0 20px;
+    }
+
+    #main { 
+      flex: 3; 
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      box-shadow: var(--box-shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    #sidebar { 
+      flex: 1; 
+      background: rgba(255, 255, 255, 0.95);
+      padding: 25px; 
+      border-radius: var(--border-radius);
+      color: var(--dark-color);
+      box-shadow: var(--box-shadow);
+      backdrop-filter: blur(10px);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .slider { 
+      position: relative; 
+      max-width: 100%; 
+      margin: 30px auto 50px auto; 
+      overflow: hidden; 
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+
+    .slides { 
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .slides img { 
+      width: 100%; 
+      border-radius: var(--border-radius);
+      transition: transform 0.3s ease;
+    }
+
+    .slides img:hover {
+      transform: scale(1.02);
+    }
+
+    h2 { 
+      color: var(--primary-color);
+      font-size: 2rem; 
+      margin: 30px 0 20px 0;
+      padding-bottom: 10px;
+      border-bottom: 3px solid var(--secondary-color);
+      position: relative;
+    }
+
+    h2::before {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      right: 0;
+      width: 50px;
+      height: 3px;
+      background: var(--accent-color);
+    }
+
+    section { 
+      margin-bottom: 50px; 
+    }
+
+    .post { 
+      background: linear-gradient(135deg, #ffffff, #f8f9fa);
+      padding: 20px; 
+      border-radius: var(--border-radius);
+      margin-bottom: 20px; 
+      color: var(--dark-color);
+      border-left: 4px solid var(--secondary-color);
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+    }
+
+    .post:hover {
+      transform: translateX(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    footer {
+      background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+      color: white;
+      text-align: center;
+      padding: 25px;
+      font-size: 1rem;
+      margin-top: 50px;
+      position: relative;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+    }
+
+    .contact-form input, .contact-form textarea { 
+      width: 100%; 
+      padding: 12px 15px; 
+      margin: 8px 0; 
+      border: 2px solid #e0e0e0; 
+      border-radius: var(--border-radius); 
+      background: white; 
+      color: var(--dark-color);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .contact-form input:focus, .contact-form textarea:focus {
+      border-color: var(--secondary-color);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    .contact-form button { 
+      background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+      color: white; 
+      border: none; 
+      padding: 12px 30px; 
+      border-radius: var(--border-radius); 
+      cursor: pointer; 
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: var(--transition);
+      box-shadow: var(--box-shadow);
+    }
+
+    .contact-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
     .video-container { 
       position: relative; 
       width: 100%; 
-      max-width: 400px; 
-      margin: 10px 0; 
+      max-width: 500px; 
+      margin: 15px 0; 
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
     }
+
     .video-container iframe { 
       width: 100%; 
-      height: 300px; 
-      border-radius: 10px; 
-      border: 2px solid #000; 
+      height: 280px; 
+      border-radius: var(--border-radius);
+      border: none;
+      transition: var(--transition);
     }
+
+    .video-container:hover iframe {
+      transform: scale(1.02);
+    }
+
     .week-content {
-      margin-top: 10px;
-      padding: 10px;
+      margin-top: 15px;
+      padding: 20px;
+      background: rgba(248, 249, 250, 0.8);
+      border-radius: var(--border-radius);
+      border: 1px solid #e9ecef;
     }
+
     .content-section {
-      background: #e8f4f8;
-      margin: 10px 0;
-      padding: 15px;
-      border-radius: 8px;
-      border-right: 4px solid #000;
+      background: linear-gradient(135deg, #ffffff, #f8f9fa);
+      margin: 15px 0;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      border-right: 4px solid var(--secondary-color);
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
     }
+
+    .content-section:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
     .quran-section {
-      background: #f0e8f8;
+      background: linear-gradient(135deg, #f0e8f8, #e8dcf8);
+      border-right-color: #9b59b6;
     }
+
     .letter-section {
-      background: #e8f8f0;
+      background: linear-gradient(135deg, #e8f8f0, #dcf8e8);
+      border-right-color: var(--success-color);
+    }
+
+    .story-section {
+      background: linear-gradient(135deg, #fff8e8, #fff0dc);
+      border-right-color: var(--warning-color);
+    }
+
+    .raa-section {
+      background: linear-gradient(135deg, #ffe8e8, #ffdcdc);
+      border-right-color: var(--accent-color);
+    }
+
+    .ain-section {
+      background: linear-gradient(135deg, #e8e8ff, #dcdcff);
+      border-right-color: #8e44ad;
+    }
+
+    .header-image {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .header-image img {
+      max-width: 100%;
+      border-radius: var(--border-radius);
+      border: 3px solid var(--secondary-color);
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+    }
+
+    .header-image img:hover {
+      transform: scale(1.02);
+    }
+
+    .week-title {
+      cursor: pointer;
+      font-weight: 700;
+      padding: 15px 20px;
+      background: linear-gradient(135deg, var(--light-color), #dfe6e9);
+      border-radius: var(--border-radius);
+      margin-bottom: 10px;
+      border: 2px solid transparent;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--box-shadow);
+    }
+
+    .week-title:hover {
+      background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+      color: white;
+      transform: translateX(-5px);
+      border-color: var(--secondary-color);
+    }
+
+    .units {
+      display: none;
+      margin-top: 15px;
+      padding-right: 20px;
+    }
+
+    .weeks {
+      display: none;
+      margin-top: 15px;
+      padding-right: 20px;
+      border-right: 2px solid var(--light-color);
+    }
+
+    .lesson-btn, .unit-btn {
+      background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 10px 0;
+      width: 100%;
+      text-align: right;
+      transition: var(--transition);
+      box-shadow: var(--box-shadow);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lesson-btn:hover, .unit-btn:hover {
+      background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+      transform: translateX(-5px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #sidebar h2 {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    #sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    #sidebar li {
+      margin-bottom: 12px;
+    }
+
+    #sidebar a {
+      color: var(--dark-color);
+      text-decoration: none;
+      padding: 12px 15px;
+      border-radius: var(--border-radius);
+      display: block;
+      transition: var(--transition);
+      background: rgba(52, 152, 219, 0.1);
+      border-right: 3px solid var(--secondary-color);
+    }
+
+    #sidebar a:hover {
+      background: var(--secondary-color);
+      color: white;
+      transform: translateX(-5px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      #content {
+        flex-direction: column;
+      }
+      
+      nav a {
+        margin: 0 10px;
+        padding: 8px 15px;
+        font-size: 1rem;
+      }
+      
+      header {
+        font-size: 2rem;
+        padding: 30px 20px;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- المحتوى يبقى كما هو بدون تغيير -->
   <header>منصة المعلمة وجدان أبو زغلة</header>
   <nav>
     <a href="#news">الأخبار</a>
@@ -85,6 +485,7 @@
 
   <div id="content">
     <div id="main">
+      <!-- جميع الأقسام والمحتوى يبقى كما هو -->
       <section id='news'>
         <h2>📰 الأخبار</h2>
         <div class='post'>📢 إعلان: بدأ العام الدراسي الجديد يوم الأحد القادم!</div>
@@ -112,97 +513,152 @@
         <div class="lesson-section">
           <button class="lesson-btn">📖 الفصل الأول</button>
           <div class="units">
+            <!-- جميع الوحدات والأسابيع تبقى كما هي -->
             <div class="unit">
               <button class="unit-btn">1️⃣ أهلا بالروضة</button>
               <div class="weeks">
-                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+                <div class="week-title">📥 الأسبوع الأول</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الأول - أهلا بالروضة</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثاني</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثاني - أهلا بالروضة</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثالث</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثالث - أهلا بالروضة</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الرابع</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الرابع - أهلا بالروضة</p>
+                </div>
               </div>
             </div>
 
             <div class="unit">
               <button class="unit-btn">2️⃣ من أنا؟</button>
               <div class="weeks">
-                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+                <div class="week-title">📥 الأسبوع الأول</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الأول - من أنا؟</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثاني</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثاني - من أنا؟</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثالث</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثالث - من أنا؟</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الرابع</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الرابع - من أنا؟</p>
+                </div>
               </div>
             </div>
 
             <div class="unit">
               <button class="unit-btn">3️⃣ أسرتي</button>
               <div class="weeks">
-                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+                <div class="week-title">📥 الأسبوع الأول</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الأول - أسرتي</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثاني</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثاني - أسرتي</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثالث</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثالث - أسرتي</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الرابع</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الرابع - أسرتي</p>
+                </div>
               </div>
             </div>
 
             <div class="unit">
               <button class="unit-btn">4️⃣ الحيوانات</button>
               <div class="weeks">
-                <div class="post">
-                  📥 الأسبوع الأول
-                  <div class="week-content">
-                    <!-- قسم قصة العدد صفر -->
-                    <div class="content-section">
-                      <h3 style="margin: 0 0 10px 0; color: #000;">📖 قصة العدد صفر</h3>
-                      <div class="video-container">
-                        <iframe 
-                          src="https://www.youtube.com/embed/Wls7UUh8_xI" 
-                          title="قصة العدد صفر" 
-                          frameborder="0" 
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                          allowfullscreen>
-                        </iframe>
-                      </div>
-                      <p style="margin: 10px 0 0 0; color: #000;">
-                        قصة تعليمية ممتعة تشرح للأطفال مفهوم العدد صفر بطريقة بسيطة وجذابة.
-                      </p>
-                    </div>
+                <!-- جميع أسابيع الحيوانات تبقى كما هي -->
+                <div class="week-title">📥 الأسبوع الأول</div>
+                <div class="week-content">
+                  <div class="header-image">
+                    <img src="WhatsApp Image 2025-11-27 at 22.13.47_fe7559c6.jpg" alt="مخطط السبوكي - الحيوانات" />
+                  </div>
 
-                    <!-- قسم سورة الفيل -->
-                    <div class="content-section quran-section">
-                      <h3 style="margin: 0 0 10px 0; color: #000;">🕌 سورة الفيل</h3>
-                      <div class="video-container">
-                        <iframe 
-                          src="https://www.youtube.com/embed/H0XuzOpWQg4?si=xkl_B0joPLWYgb0s" 
-                          title="سورة الفيل" 
-                          frameborder="0" 
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                          allowfullscreen>
-                        </iframe>
-                      </div>
-                      <p style="margin: 10px 0 0 0; color: #000;">
-                        تعلم سورة الفيل مع الأناشيد والتلاوة الجميلة المناسبة للأطفال.
-                      </p>
+                  <div class="content-section">
+                    <h3 style="margin: 0 0 10px 0; color: #000;">📖 قصة العدد صفر</h3>
+                    <div class="video-container">
+                      <iframe src="https://www.youtube.com/embed/Wls7UUh8_xI" title="قصة العدد صفر" frameborder="0" allowfullscreen></iframe>
                     </div>
+                    
+                  </div>
 
-                    <!-- قسم حرف النون -->
-                    <div class="content-section letter-section">
-                      <h3 style="margin: 0 0 10px 0; color: #000;">🔠 حرف النون</h3>
-                      <div class="video-container">
-                        <iframe 
-                          src="https://www.youtube.com/embed/9tis2J-VOcY?si=rzFpHdvv2CoDgbeS" 
-                          title="حرف النون" 
-                          frameborder="0" 
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                          allowfullscreen>
-                        </iframe>
-                      </div>
-                      <p style="margin: 10px 0 0 0; color: #000;">
-                        تعلم حرف النون مع الأناشيد والكلمات الممتعة المناسبة للأطفال.
-                      </p>
+                  <div class="content-section quran-section">
+                    <h3 style="margin: 0 0 10px 0; color: #000;">🕌 سورة الفيل</h3>
+                    <div class="video-container">
+                      <iframe src="https://www.youtube.com/embed/H0XuzOpWQg4?si=xkl_B0joPLWYgb0s" title="سورة الفيل" frameborder="0" allowfullscreen></iframe>
                     </div>
+                    
+
+                  </div>
+
+                  <div class="content-section letter-section">
+                    <h3 style="margin: 0 0 10px 0; color: #000;">🔠 حرف النون</h3>
+                    <div class="video-container">
+                      <iframe src="https://www.youtube.com/embed/9tis2J-VOcY?si=rzFpHdvv2CoDgbeS" title="حرف النون" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    
+
                   </div>
                 </div>
-                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+
+                <div class="week-title">📥 الأسبوع الثاني</div>
+                <div class="week-content">
+                  <div class="header-image">
+                    <img src="WhatsApp Image 2025-11-27 at 23.35.27_d8ac5326.jpg" alt="مخطط السوعي - الطيور" />
+                  </div>
+
+                  <div class="content-section story-section">
+                    <h3 style="margin: 0 0 10px 0; color: #000;">📖 قصة حرف الدال</h3>
+                    <div class="video-container">
+                      <iframe src="https://www.youtube.com/embed/jzUOUw0g6dE?si=_aGggBTD5GnyVGsu" title="قصة حرف الدال" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    
+                  </div>
+                </div>
+
+                <div class="week-title">📥 الأسبوع الثالث</div>
+                <div class="week-content">
+                           <div class="header-image">
+                          <img src="5.jpg" alt="الحيوانات البحرية - الأسبوع الثالث" />
+                           </div>
+                  <div class="content-section raa-section">
+                    <h3 style="margin: 0 0 10px 0; color: #000;">📖 قصة حرف الراء</h3>
+                    <div class="video-container">
+                      <iframe src="https://www.youtube.com/embed/DLGqHCX-FJQ?si=gmjN2i1renMZm2Sz" title="قصة حرف الراء" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    
+                  </div>
+                </div>
+
+                <div class="week-title">📥 الأسبوع الرابع</div>
+                <div class="week-content">
+<div class="header-image">
+    <img src="6.jpg" alt="الحيوانات البحرية - الأسبوع الثالث" />
+  </div>
+                  <div class="content-section ain-section">
+                    <h3 style="margin: 0 0 10px 0; color: #000;">📖 قصة حرف العين</h3>
+                    <div class="video-container">
+                      <iframe src="https://www.youtube.com/embed/-KNrxufpXrs?si=Hb_R34LzAZ1QBc6d" title="قصة حرف العين" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                   
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -212,43 +668,92 @@
         <div class="lesson-section">
           <button class="lesson-btn">📖 الفصل الثاني</button>
           <div class="units">
+            <!-- جميع وحدات الفصل الثاني تبقى كما هي -->
             <div class="unit">
               <button class="unit-btn">1️⃣ النباتات</button>
               <div class="weeks">
-                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+                <div class="week-title">📥 الأسبوع الأول</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الأول - النباتات</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثاني</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثاني - النباتات</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثالث</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثالث - النباتات</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الرابع</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الرابع - النباتات</p>
+                </div>
               </div>
             </div>
 
             <div class="unit">
               <button class="unit-btn">2️⃣ وطن</button>
               <div class="weeks">
-                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+                <div class="week-title">📥 الأسبوع الأول</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الأول - وطن</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثاني</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثاني - وطن</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثالث</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثالث - وطن</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الرابع</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الرابع - وطن</p>
+                </div>
               </div>
             </div>
 
             <div class="unit">
               <button class="unit-btn">3️⃣ أصدقاء الأرض</button>
               <div class="weeks">
-                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+                <div class="week-title">📥 الأسبوع الأول</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الأول - أصدقاء الأرض</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثاني</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثاني - أصدقاء الأرض</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثالث</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثالث - أصدقاء الأرض</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الرابع</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الرابع - أصدقاء الأرض</p>
+                </div>
               </div>
             </div>
 
             <div class="unit">
               <button class="unit-btn">4️⃣ شكراً روضتي</button>
               <div class="weeks">
-                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+                <div class="week-title">📥 الأسبوع الأول</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الأول - شكراً روضتي</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثاني</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثاني - شكراً روضتي</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الثالث</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الثالث - شكراً روضتي</p>
+                </div>
+                <div class="week-title">📥 الأسبوع الرابع</div>
+                <div class="week-content">
+                  <p>محتويات الأسبوع الرابع - شكراً روضتي</p>
+                </div>
               </div>
             </div>
           </div>
@@ -275,21 +780,32 @@
       const lessons = document.querySelector('#lessons');
       if (!lessons) return;
 
+      // فتح/إغلاق الفصول
       lessons.addEventListener('click', function (e) {
         const btn = e.target.closest('button');
         if (!btn) return;
 
-        // فتح/إغلاق الفصول
         if (btn.classList.contains('lesson-btn')) {
           const units = btn.nextElementSibling;
           if (units) units.style.display = (units.style.display === 'block') ? 'none' : 'block';
         }
 
-        // فتح/إغلاق الوحدات (الأسابيع)
+        // فتح/إغلاق الوحدات
         if (btn.classList.contains('unit-btn')) {
           const weeks = btn.nextElementSibling;
           if (weeks) weeks.style.display = (weeks.style.display === 'block') ? 'none' : 'block';
         }
+      });
+
+      // فتح/إغلاق محتوى الأسابيع
+      const weekTitles = document.querySelectorAll('.week-title');
+      weekTitles.forEach(title => {
+        title.addEventListener('click', function() {
+          const content = this.nextElementSibling;
+          if (content && content.classList.contains('week-content')) {
+            content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+          }
+        });
       });
     });
   </script>

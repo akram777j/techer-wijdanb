@@ -20,19 +20,48 @@
     h2 { color:#000000; font-size:26px; margin:30px 0 15px 0; }
     section { margin-bottom:40px; }
     .post { background:#f2f2f2; padding:15px; border-radius:10px; margin-bottom:10px; color:#000000; }
-footer {
-  background: transparent;   /* خلفية شفافة */
-  color: #000;               /* النص أسود */
-  text-align: center;
-  padding: 10px;
-  font-size: 10px;
-  position: fixed;   /* يثبت أسفل الشاشة */
-  bottom: 0;
-  left: 0;
-  width: 80%;
-}
-.contact-form input, .contact-form textarea { width:100%; padding:10px; margin:5px 0; border:1px solid #000; border-radius:8px; background:#fff; color:#000; }
+    footer {
+      background: transparent;
+      color: #000;
+      text-align: center;
+      padding: 10px;
+      font-size: 10px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 80%;
+    }
+    .contact-form input, .contact-form textarea { width:100%; padding:10px; margin:5px 0; border:1px solid #000; border-radius:8px; background:#fff; color:#000; }
     .contact-form button { background:#000000; color:#ffffff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:16px; }
+    .video-container { 
+      position: relative; 
+      width: 100%; 
+      max-width: 400px; 
+      margin: 10px 0; 
+    }
+    .video-container iframe { 
+      width: 100%; 
+      height: 300px; 
+      border-radius: 10px; 
+      border: 2px solid #000; 
+    }
+    .week-content {
+      margin-top: 10px;
+      padding: 10px;
+    }
+    .content-section {
+      background: #e8f4f8;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      border-right: 4px solid #000;
+    }
+    .quran-section {
+      background: #f0e8f8;
+    }
+    .letter-section {
+      background: #e8f8f0;
+    }
   </style>
 </head>
 <body>
@@ -76,104 +105,156 @@ footer {
         <div class='post'><img src='https://i.ibb.co/7yR1R1D/kids-drawing.jpg' style='width:60%; border-radius:10px;'/><p>رسومات الأطفال الجميلة</p></div>
       </section>
 
- <section id="lessons">
-  <h2>📚 دروسي</h2>
+      <section id="lessons">
+        <h2>📚 دروسي</h2>
 
-  <!-- الفصل الأول -->
-  <div class="lesson-section">
-    <button class="lesson-btn">📖 الفصل الأول</button>
-    <div class="units">
-      <div class="unit">
-        <button class="unit-btn">1️⃣ أهلا بالروضة</button>
-        <div class="weeks">
-          <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
-        </div>
-      </div>
+        <!-- الفصل الأول -->
+        <div class="lesson-section">
+          <button class="lesson-btn">📖 الفصل الأول</button>
+          <div class="units">
+            <div class="unit">
+              <button class="unit-btn">1️⃣ أهلا بالروضة</button>
+              <div class="weeks">
+                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+              </div>
+            </div>
 
-      <div class="unit">
-        <button class="unit-btn">2️⃣ من أنا؟</button>
-        <div class="weeks">
-          <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
-        </div>
-      </div>
+            <div class="unit">
+              <button class="unit-btn">2️⃣ من أنا؟</button>
+              <div class="weeks">
+                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+              </div>
+            </div>
 
-      <div class="unit">
-        <button class="unit-btn">3️⃣ أسرتي</button>
-        <div class="weeks">
-          <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
-        </div>
-      </div>
+            <div class="unit">
+              <button class="unit-btn">3️⃣ أسرتي</button>
+              <div class="weeks">
+                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+              </div>
+            </div>
 
-      <div class="unit">
-        <button class="unit-btn">4️⃣ الحيوانات</button>
-        <div class="weeks">
-          <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+            <div class="unit">
+              <button class="unit-btn">4️⃣ الحيوانات</button>
+              <div class="weeks">
+                <div class="post">
+                  📥 الأسبوع الأول
+                  <div class="week-content">
+                    <!-- قسم قصة العدد صفر -->
+                    <div class="content-section">
+                      <h3 style="margin: 0 0 10px 0; color: #000;">📖 قصة العدد صفر</h3>
+                      <div class="video-container">
+                        <iframe 
+                          src="https://www.youtube.com/embed/Wls7UUh8_xI" 
+                          title="قصة العدد صفر" 
+                          frameborder="0" 
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                          allowfullscreen>
+                        </iframe>
+                      </div>
+                      <p style="margin: 10px 0 0 0; color: #000;">
+                        قصة تعليمية ممتعة تشرح للأطفال مفهوم العدد صفر بطريقة بسيطة وجذابة.
+                      </p>
+                    </div>
+
+                    <!-- قسم سورة الفيل -->
+                    <div class="content-section quran-section">
+                      <h3 style="margin: 0 0 10px 0; color: #000;">🕌 سورة الفيل</h3>
+                      <div class="video-container">
+                        <iframe 
+                          src="https://www.youtube.com/embed/H0XuzOpWQg4?si=xkl_B0joPLWYgb0s" 
+                          title="سورة الفيل" 
+                          frameborder="0" 
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                          allowfullscreen>
+                        </iframe>
+                      </div>
+                      <p style="margin: 10px 0 0 0; color: #000;">
+                        تعلم سورة الفيل مع الأناشيد والتلاوة الجميلة المناسبة للأطفال.
+                      </p>
+                    </div>
+
+                    <!-- قسم حرف النون -->
+                    <div class="content-section letter-section">
+                      <h3 style="margin: 0 0 10px 0; color: #000;">🔠 حرف النون</h3>
+                      <div class="video-container">
+                        <iframe 
+                          src="https://www.youtube.com/embed/9tis2J-VOcY?si=rzFpHdvv2CoDgbeS" 
+                          title="حرف النون" 
+                          frameborder="0" 
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                          allowfullscreen>
+                        </iframe>
+                      </div>
+                      <p style="margin: 10px 0 0 0; color: #000;">
+                        تعلم حرف النون مع الأناشيد والكلمات الممتعة المناسبة للأطفال.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+
+        <!-- الفصل الثاني -->
+        <div class="lesson-section">
+          <button class="lesson-btn">📖 الفصل الثاني</button>
+          <div class="units">
+            <div class="unit">
+              <button class="unit-btn">1️⃣ النباتات</button>
+              <div class="weeks">
+                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+              </div>
+            </div>
+
+            <div class="unit">
+              <button class="unit-btn">2️⃣ وطن</button>
+              <div class="weeks">
+                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+              </div>
+            </div>
+
+            <div class="unit">
+              <button class="unit-btn">3️⃣ أصدقاء الأرض</button>
+              <div class="weeks">
+                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+              </div>
+            </div>
+
+            <div class="unit">
+              <button class="unit-btn">4️⃣ شكراً روضتي</button>
+              <div class="weeks">
+                <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
+                <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-  </div>
-
-  <!-- الفصل الثاني -->
-  <div class="lesson-section">
-    <button class="lesson-btn">📖 الفصل الثاني</button>
-    <div class="units">
-      <div class="unit">
-        <button class="unit-btn">1️⃣ النباتات</button>
-        <div class="weeks">
-          <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
-        </div>
-      </div>
-
-      <div class="unit">
-        <button class="unit-btn">2️⃣ وطن</button>
-        <div class="weeks">
-          <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
-        </div>
-      </div>
-
-      <div class="unit">
-        <button class="unit-btn">3️⃣ أصدقاء الأرض</button>
-        <div class="weeks">
-          <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
-        </div>
-      </div>
-
-      <div class="unit">
-        <button class="unit-btn">4️⃣ شكراً روضتي</button>
-        <div class="weeks">
-          <div class="post">📥 <a href="#">الأسبوع الأول</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثاني</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الثالث</a></div>
-          <div class="post">📥 <a href="#">الأسبوع الرابع</a></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
 
     <aside id="sidebar">
       <h2>📌 روابط سريعة</h2>
@@ -188,29 +269,30 @@ footer {
   </div>
 
   <footer>© 2025 جميع الحقوق محفوظة - منصة المعلمة وجدان أبو زغلة</footer>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const lessons = document.querySelector('#lessons');
-    if (!lessons) return;
 
-    lessons.addEventListener('click', function (e) {
-      const btn = e.target.closest('button');
-      if (!btn) return;
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const lessons = document.querySelector('#lessons');
+      if (!lessons) return;
 
-      // فتح/إغلاق الفصول
-      if (btn.classList.contains('lesson-btn')) {
-        const units = btn.nextElementSibling;    // div.units
-        if (units) units.style.display = (units.style.display === 'block') ? 'none' : 'block';
-      }
+      lessons.addEventListener('click', function (e) {
+        const btn = e.target.closest('button');
+        if (!btn) return;
 
-      // فتح/إغلاق الوحدات (الأسابيع)
-      if (btn.classList.contains('unit-btn')) {
-        const weeks = btn.nextElementSibling;    // div.weeks
-        if (weeks) weeks.style.display = (weeks.style.display === 'block') ? 'none' : 'block';
-      }
+        // فتح/إغلاق الفصول
+        if (btn.classList.contains('lesson-btn')) {
+          const units = btn.nextElementSibling;
+          if (units) units.style.display = (units.style.display === 'block') ? 'none' : 'block';
+        }
+
+        // فتح/إغلاق الوحدات (الأسابيع)
+        if (btn.classList.contains('unit-btn')) {
+          const weeks = btn.nextElementSibling;
+          if (weeks) weeks.style.display = (weeks.style.display === 'block') ? 'none' : 'block';
+        }
+      });
     });
-  });
-</script>
+  </script>
 
 </body>
 </html>

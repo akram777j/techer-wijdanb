@@ -375,11 +375,19 @@
       padding-right: 20px;
     }
 
+    .units.show {
+      display: block;
+    }
+
     .weeks {
       display: none;
       margin-top: 15px;
       padding-right: 20px;
       border-right: 2px solid var(--light-color);
+    }
+
+    .weeks.show {
+      display: block;
     }
 
     .lesson-btn, .unit-btn {
@@ -398,7 +406,18 @@
       box-shadow: var(--box-shadow);
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 10px;
+    }
+
+    .lesson-btn::after, .unit-btn::after {
+      content: '▼';
+      font-size: 14px;
+      transition: transform 0.3s;
+    }
+
+    .lesson-btn.active::after, .unit-btn.active::after {
+      transform: rotate(180deg);
     }
 
     .lesson-btn:hover, .unit-btn:hover {
@@ -464,10 +483,9 @@
   </style>
 </head>
 <body>
-  <!-- المحتوى يبقى كما هو بدون تغيير -->
   <header>منصة المعلمة وجدان أبو زغلة</header>
   <nav>
-    <a href="#news">الأخبار</a>
+    <a href="#news">الخطط الدراسية</a>
     <a href="#activities">الأنشطة</a>
     <a href="#tests">الاختبارات</a>
     <a href="#works">أعمالي</a>
@@ -485,25 +503,347 @@
 
   <div id="content">
     <div id="main">
-      <!-- جميع الأقسام والمحتوى يبقى كما هو -->
       <section id='news'>
-        <h2>📰 الأخبار</h2>
-        <div class='post'>📢 إعلان: بدأ العام الدراسي الجديد يوم الأحد القادم!</div>
-      </section>
+    <h2>📰 الخطط الدراسية</h2>
+    <div class='post'>
+
+   <!-- الفصل الأول -->
+<div class="lesson-section">
+    <button class="lesson-btn">📘 الخطط الدراسية للفصل الأول</button>
+    <div class="units">
+        <!-- الملف داخل خطط الفصل الأول -->
+        <div class="unit">
+            <button class="unit-btn">📄 تحضيرات الفصل الأول (ملف واحد شامل)</button>
+            <div class="weeks">
+                <div class="week-title">📥 رابط التحميل</div>
+                <div class="week-content">
+                    <p>الملف الشامل لجميع تحضيرات الفصل الأول:</p>
+                    <div style="padding: 15px; background: #f0f8ff; border-radius: 10px; border: 2px solid #9b59b6; margin: 15px 0;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="font-size: 2em; color: #9b59b6;">📘</div>
+                            <div>
+                                <h4 style="margin: 0 0 5px 0; color: #2c3e50;">تحضيرات الفصل الأول</h4>
+                                <p style="margin: 0; color: #666; font-size: 0.9em;">يشمل جميع الوحدات: أهلًا بالروضة، أنا، أسرتي، الحيوانات</p>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 15px;">
+                            <a href="https://drive.google.com/drive/folders/1UNaOW2_4P9wuiObxsHwVZjilL3kUldgB?usp=sharing" 
+                               target="_blank"
+                               style="display: inline-block; background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; text-align: center; width: 100%;">
+                                📥 اضغطي هنا لتحميل الملف الشامل
+                            </a>
+                        </div>
+                        
+                        <div style="margin-top: 10px; padding: 10px; background: #fff3cd; border-radius: 6px; border-left: 4px solid #ffc107;">
+                            <p style="margin: 0; color: #856404; font-size: 0.85em;">
+                                💡 هذا الملف يحتوي على جميع تحضيرات الفصل الأول في ملف واحد
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- نهاية الملف -->
+
+        <!-- خطة أهلًا بالروضة -->
+        <div class="unit">
+            <button class="unit-btn">🟦 خطة وحدة أهلًا بالروضة + تحليل محتوى</button>
+            <div class="weeks">
+                <div class="week-title">📄 تحميل الملف</div>
+                <div class="week-content">
+                    <p>اضغطي هنا لتنزيل ملف خطة وحدة أهلًا بالروضة.</p>
+                    <a href="https://docs.google.com/document/d/1oWNcWpe9r0aFP0DmyIPP3q7iNr97b844/edit?usp=sharing&ouid=117873860186760219209&rtpof=true&sd=true" 
+                       target="_blank"
+                       style="display: inline-block; background: #3498db; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; margin-top: 10px;">
+                        📥 تحميل خطة أهلًا بالروضة
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- خطة وحدة أنا -->
+        <div class="unit">
+            <button class="unit-btn">🟩 خطة وحدة أنا + تحليل محتوى</button>
+            <div class="weeks">
+                <div class="week-title">📄 تحميل الملف</div>
+                <div class="week-content">
+                    <p>اضغطي هنا لتنزيل ملف خطة وحدة أنا.</p>
+                    <a href="https://docs.google.com/document/d/1SRx2PRImwYYZEpAFSzcMHtghnObJllN1/edit?usp=sharing&ouid=117873860186760219209&rtpof=true&sd=true"
+                       target="_blank"
+                       style="display: inline-block; background: #2ecc71; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; margin-top: 10px;">
+                        📥 تحميل خطة وحدة أنا
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- خطة وحدة أسرتي -->
+        <div class="unit">
+            <button class="unit-btn">🟫 خطة وحدة أسرتي + تحليل محتوى</button>
+            <div class="weeks">
+                <div class="week-title">📄 تحميل الملف</div>
+                <div class="week-content">
+                    <p>اضغطي هنا لتنزيل ملف خطة وحدة أسرتي.</p>
+                    <a href="https://docs.google.com/document/d/1noLUv_kb3CZnU9bVdDPD-p4m4zVfdBxp/edit?usp=sharing&ouid=117873860186760219209&rtpof=true&sd=true"
+                       target="_blank"
+                       style="display: inline-block; background: #8b4513; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; margin-top: 10px;">
+                        📥 تحميل خطة وحدة أسرتي
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- خطة الحيوانات -->
+        <div class="unit">
+            <button class="unit-btn">🟧 خطة وحدة الحيوانات + تحليل محتوى</button>
+            <div class="weeks">
+                <div class="week-title">📄 تحميل الملف</div>
+                <div class="week-content">
+                    <p>اضغطي هنا لتنزيل ملف خطة وحدة الحيوانات.</p>
+                    <a href="https://docs.google.com/document/d/1e17tCXz57R7tT8I3w_q5uh_0NJ1VmirG/edit?usp=sharing&ouid=117873860186760219209&rtpof=true&sd=true"
+                       target="_blank"
+                       style="display: inline-block; background: #e67e22; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; margin-top: 10px;">
+                        📥 تحميل خطة وحدة الحيوانات
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<!-- الفصل الثاني -->
+<div class="lesson-section">
+    <button class="lesson-btn">📗 الخطط الدراسية للفصل الثاني</button>
+    <div class="units">
+        <!-- تضيفين ملفات الفصل الثاني هنا لاحقًا -->
+        <div class="unit">
+            <button class="unit-btn">🟪 خطط الفصل الثاني (قريباً)</button>
+            <div class="weeks">
+                <div class="week-title">📄 تحميل الملف</div>
+                <div class="week-content">
+                    <p>سيتم إضافة خطط الفصل الثاني قريباً.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
 
       <section id='activities'>
         <h2>🎨 الأنشطة</h2>
         <div class='post'><img src='https://i.ibb.co/pLzWbX9/kids-activity.jpg' style='width:60%; border-radius:10px;'/><p>نشاط تلوين ممتع للأطفال</p></div>
       </section>
 
-      <section id='tests'>
+            <section id='tests'>
         <h2>📝 الاختبارات</h2>
+        
+        <!-- قسم الاختبارات (بنظام الطي والفتح) -->
+        <div class="lesson-section" style="margin-bottom: 20px;">
+          <button class="unit-btn" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">📊 الاختبارات</button>
+          <div class="weeks" style="margin-top: 15px; display: none;">
+            <div class="week-content">
+              
+              <!-- مكان للصور -->
+              <div style="text-align: center; margin-bottom: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                <h4 style="color: #2c3e50; margin-bottom: 15px;">🖼️ صور الاختبارات</h4>
+                <p style="color: #666; margin-bottom: 20px;">يمكنك وضع صور الاختبارات هنا</p>
+                
+                <!-- مساحة الصور -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;" id="tests-images-container">
+                   <img src="19.jpg" alt="اختبار 1" style="max-width: 100%; border-radius: 10px; border: 2px solid #3498db;">
+ <img src="20.jpg" alt="اختبار 1" style="max-width: 100%; border-radius: 10px; border: 2px solid #3498db;">
+ <img src="21.jpg" alt="اختبار 1" style="max-width: 100%; border-radius: 10px; border: 2px solid #3498db;">
+ <img src="22.jpg" alt="اختبار 1" style="max-width: 100%; border-radius: 10px; border: 2px solid #3498db;">
+ <img src="23.jpg" alt="اختبار 1" style="max-width: 100%; border-radius: 10px; border: 2px solid #3498db;">
+ <img src="24.jpg" alt="اختبار 1" style="max-width: 100%; border-radius: 10px; border: 2px solid #3498db;">
+                </div>
+                
+                <!-- تعليمات -->
+                <div style="margin-top: 20px; padding: 10px; background: #fff3cd; border-radius: 6px; border-left: 4px solid #ffc107;">
+                  <p style="margin: 0; color: #856404; font-size: 0.9em;">
+                    💡 يمكنك إضافة صور الاختبارات بوضعها في مجلد الموقع وإضافة روابطها هنا
+                  </p>
+                </div>
+              </div>
+              
+              <!-- مساحة إضافية للمحتوى -->
+              <div style="margin-top: 20px; padding: 20px; background: #e8f4fc; border-radius: 10px; border: 2px dashed #3498db;">
+                <h4 style="color: #2c3e50; margin-bottom: 10px; text-align: center;">➕ إضافة اختبارات جديدة</h4>
+                <p style="color: #666; text-align: center;">هذه المساحة لإضافة اختبارات جديدة لاحقاً</p>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <!-- نهاية قسم الاختبارات -->
+        
+        <!-- الرابط الأصلي -->
         <div class='post'>🔗 اختبار الألوان: <a href='#'>اضغطي هنا</a></div>
       </section>
 
-      <section id='works'>
+               <section id='works'>
         <h2>🏆 أعمالي</h2>
-        <div class='post'><img src='https://i.ibb.co/7yR1R1D/kids-drawing.jpg' style='width:60%; border-radius:10px;'/><p>رسومات الأطفال الجميلة</p></div>
+        
+        <!-- قسم فيديوهات تعليمية (بنظام الطي والفتح) -->
+        <div class="lesson-section" style="margin-bottom: 20px;">
+          <button class="unit-btn" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">🎬 فيديوهات تعليمية</button>
+          <div class="weeks" style="margin-top: 15px; display: none;">
+            <div class="week-content">
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                
+                <!-- فيديو تعليم دعاء الطعام -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">🍽️ تعليم دعاء الطعام</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/Qygop4gNH6w" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو تعليم تحية السلام -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">🤝 تعليم تحية السلام</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/RO8Ouz9sIyo" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو تعليم حديث الرسول -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">🕌 تعليم حديث الرسول</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/c1d2PtFo48A" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو قصة حرف الألف -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">🔤 قصة حرف الألف</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/oDT-N34LnlI" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو تعليم التهجئة الصحيحة -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">📖 تعليم التهجئة الصحيحة</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/DyR6Z-wq5n0" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو قصة حرف الشين -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">🔤 قصة حرف الشين</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/fJU0QaqEmOQ" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو قصة حرف العين -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">🔤 قصة حرف العين</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/-KNrxufpXrs" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو قصة حرف السين -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">🔤 قصة حرف السين</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/rbqejA-2e3k" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو قصة حرف الدال -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">🔤 قصة حرف الدال</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/jzUOUw0g6dE" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو قصة الرقم 0 -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">0️⃣ قصة الرقم 0</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/Wls7UUh8_xI" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو قصة حرف التاء -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">🔤 قصة حرف التاء</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/6d-HnXBxPac" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو قصة حرف النون -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">🔤 قصة حرف النون</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/9tis2J-VOcY" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو قصة حرف الميم -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">🔤 قصة حرف الميم</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/HicAmIPB_Ow" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو قصة حرف الواو -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">🔤 قصة حرف الواو</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/1OZxZj9mhDI" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو تعليمي عن النظافة -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">🧼 فيديو تعليمي عن النظافة</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/3w2kWsnXBt8" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو قصة الحواس الخمسة -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">👁️ قصة الحواس الخمسة</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/JQ7vBPiqQw0" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+                <!-- فيديو قصة ليلى -->
+                <div class="content-section" style="margin: 0;">
+                  <h4 style="margin: 0 0 10px 0; color: #000;">📖 قصة ليلى والجدة</h4>
+                  <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/CMAZqCrL5mM" allowfullscreen></iframe>
+                  </div>
+                </div>
+                
+              </div>
+              
+              <div style="margin-top: 20px; text-align: center; color: #666; font-size: 0.9em;">
+                <p>🎥 مجموعة من الفيديوهات التعليمية المفيدة للأطفال في مرحلة الروضة</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- نهاية قسم فيديوهات تعليمية -->
+        
+        <!-- القسم الأصلي (رسومات الأطفال) -->
+        <div class='post'>
+          <img src='https://i.ibb.co/7yR1R1D/kids-drawing.jpg' style='width:60%; border-radius:10px;'/>
+          <p>رسومات الأطفال الجميلة</p>
+        </div>
       </section>
 
       <section id="lessons">
@@ -924,7 +1264,7 @@
     <aside id="sidebar">
       <h2>📌 روابط سريعة</h2>
       <ul>
-        <li><a href="#news">آخر الأخبار</a></li>
+        <li><a href="#news">الخطط الدراسية</a></li>
         <li><a href="#activities">صور الأنشطة</a></li>
         <li><a href="#tests">نماذج الاختبارات</a></li>
         <li><a href="#works">أعمال الطلاب</a></li>
@@ -936,39 +1276,180 @@
   <footer>© 2025 جميع الحقوق محفوظة - منصة المعلمة وجدان أبو زغلة</footer>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const lessons = document.querySelector('#lessons');
-      if (!lessons) return;
-
-      // فتح/إغلاق الفصول
-      lessons.addEventListener('click', function (e) {
-        const btn = e.target.closest('button');
-        if (!btn) return;
-
-        if (btn.classList.contains('lesson-btn')) {
-          const units = btn.nextElementSibling;
-          if (units) units.style.display = (units.style.display === 'block') ? 'none' : 'block';
-        }
-
-        // فتح/إغلاق الوحدات
-        if (btn.classList.contains('unit-btn')) {
-          const weeks = btn.nextElementSibling;
-          if (weeks) weeks.style.display = (weeks.style.display === 'block') ? 'none' : 'block';
-        }
-      });
-
-      // فتح/إغلاق محتوى الأسابيع
-      const weekTitles = document.querySelectorAll('.week-title');
-      weekTitles.forEach(title => {
-        title.addEventListener('click', function() {
-          const content = this.nextElementSibling;
-          if (content && content.classList.contains('week-content')) {
-            content.style.display = (content.style.display === 'block') ? 'none' : 'block';
-          }
+    document.addEventListener('DOMContentLoaded', function() {
+        // إضافة حدث النقر لأزرار الفصول (في قسم الخطط الدراسية)
+        document.querySelectorAll('#news .lesson-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // تبديل حالة الزر (نشط/غير نشط)
+                this.classList.toggle('active');
+                
+                // البحث عن عنصر الوحدات التابع لهذا الزر
+                const units = this.nextElementSibling;
+                
+                // إذا كان الزر نشطاً، عرض الوحدات، وإلا إخفاؤها
+                if (this.classList.contains('active')) {
+                    units.classList.add('show');
+                } else {
+                    units.classList.remove('show');
+                    
+                    // إغلاق جميع الوحدات الداخلية أيضاً
+                    const allWeeks = units.querySelectorAll('.weeks');
+                    const allUnitBtns = units.querySelectorAll('.unit-btn');
+                    
+                    allWeeks.forEach(week => {
+                        week.classList.remove('show');
+                    });
+                    
+                    allUnitBtns.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                }
+            });
         });
-      });
+        
+        // إضافة حدث النقر لأزرار الوحدات (في قسم الخطط الدراسية)
+        document.querySelectorAll('#news .unit-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // تبديل حالة الزر (نشط/غير نشط)
+                this.classList.toggle('active');
+                
+                // البحث عن عنصر الأسابيع التابع لهذا الزر
+                const weeks = this.nextElementSibling;
+                
+                // إذا كان الزر نشطاً، عرض الأسابيع، وإلا إخفاؤها
+                if (this.classList.contains('active')) {
+                    weeks.classList.add('show');
+                } else {
+                    weeks.classList.remove('show');
+                }
+            });
+        });
+        
+        // إضافة حدث النقر لأزرار الفصول (في قسم دروسي)
+        document.querySelectorAll('#lessons .lesson-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // تبديل حالة الزر (نشط/غير نشط)
+                this.classList.toggle('active');
+                
+                // البحث عن عنصر الوحدات التابع لهذا الزر
+                const units = this.nextElementSibling;
+                
+                // إذا كان الزر نشطاً، عرض الوحدات، وإلا إخفاؤها
+                if (this.classList.contains('active')) {
+                    units.classList.add('show');
+                } else {
+                    units.classList.remove('show');
+                    
+                    // إغلاق جميع الوحدات الداخلية أيضاً
+                    const allWeeks = units.querySelectorAll('.weeks');
+                    const allUnitBtns = units.querySelectorAll('.unit-btn');
+                    
+                    allWeeks.forEach(week => {
+                        week.classList.remove('show');
+                    });
+                    
+                    allUnitBtns.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                }
+            });
+        });
+        
+        // إضافة حدث النقر لأزرار الوحدات (في قسم دروسي)
+        document.querySelectorAll('#lessons .unit-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // تبديل حالة الزر (نشط/غير نشط)
+                this.classList.toggle('active');
+                
+                // البحث عن عنصر الأسابيع التابع لهذا الزر
+                const weeks = this.nextElementSibling;
+                
+                // إذا كان الزر نشطاً، عرض الأسابيع، وإلا إخفاؤها
+                if (this.classList.contains('active')) {
+                    weeks.classList.add('show');
+                } else {
+                    weeks.classList.remove('show');
+                }
+            });
+        });
+        
+        // إضافة حدث النقر لعناوين الأسابيع
+        document.querySelectorAll('.week-title').forEach(title => {
+            title.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // البحث عن محتوى الأسبوع التالي
+                const content = this.nextElementSibling;
+                
+                // تبديل عرض/إخفاء محتوى الأسبوع
+                if (content && content.classList.contains('week-content')) {
+                    if (content.style.display === 'block' || content.classList.contains('show')) {
+                        content.style.display = 'none';
+                        content.classList.remove('show');
+                    } else {
+                        content.style.display = 'block';
+                        content.classList.add('show');
+                    }
+                }
+            });
+        });
     });
   </script>
+<script>
+    // ... الكود السابق يبقى كما هو ...
+
+    // إضافة حدث النقر لأزرار الفيديوهات التعليمية
+    document.querySelectorAll('#works .unit-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            // تبديل حالة الزر (نشط/غير نشط)
+            this.classList.toggle('active');
+            
+            // البحث عن عنصر الفيديوهات التابع لهذا الزر
+            const videosSection = this.nextElementSibling;
+            
+            // إذا كان الزر نشطاً، عرض الفيديوهات، وإلا إخفاؤها
+            if (this.classList.contains('active')) {
+                videosSection.style.display = 'block';
+                videosSection.classList.add('show');
+            } else {
+                videosSection.style.display = 'none';
+                videosSection.classList.remove('show');
+            }
+        });
+    });
+        // ⭐⭐ الكود للاختبارات ⭐⭐
+        // إضافة حدث النقر لأزرار الاختبارات
+        document.querySelectorAll('#tests .unit-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // تبديل حالة الزر (نشط/غير نشط)
+                this.classList.toggle('active');
+                
+                // البحث عن عنصر الاختبارات التابع لهذا الزر
+                const testsSection = this.nextElementSibling;
+                
+                // إذا كان الزر نشطاً، عرض الاختبارات، وإلا إخفاؤها
+                if (this.classList.contains('active')) {
+                    testsSection.style.display = 'block';
+                    testsSection.classList.add('show');
+                } else {
+                    testsSection.style.display = 'none';
+                    testsSection.classList.remove('show');
+                }
+            });
+        });
+</script>
 
 </body>
 </html>

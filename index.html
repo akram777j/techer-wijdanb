@@ -737,6 +737,10 @@
 </div>
   </div>
 </div>
+
+<!-- === بداية المحتوى الديناميكي (من لوحة الأدمن) === -->
+<div id="dynamic-plans-container" style="margin-top:20px;"></div>
+<!-- === نهاية المحتوى الديناميكي === -->
 </section>
 
 
@@ -748,7 +752,7 @@
           <button class="unit-btn" style="background: linear-gradient(135deg, #1abc9c, #16a085);">🎬 فيديوهات الأنشطة</button>
           <div class="weeks" style="margin-top: 15px; display: none;">
             <div class="week-content">
-              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;" id="activities-videos-grid">
                 
                 <!-- فيديو نشاط 1 -->
                 <div class="content-section" style="margin: 0;">
@@ -923,7 +927,7 @@
           <button class="unit-btn" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">🎬 فيديوهات تعليمية</button>
           <div class="weeks" style="margin-top: 15px; display: none;">
             <div class="week-content">
-              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;" id="works-videos-grid">
  <!-- قصة العدد 10 -->
       <div class="content-section">
         <h3>🔢 قصة العدد 10</h3>
@@ -1866,7 +1870,10 @@
     </aside>
   </div>
 
-  <footer>© 2025 جميع الحقوق محفوظة - منصة المعلمة وجدان أبو زغلة</footer>
+  <footer>© 2025 جميع الحقوق محفوظة - منصة المعلمة وجدان أبو زغلة
+    <br>
+    <a href="admin.html" style="color:#bbb; font-size:0.8em; text-decoration:none;">دخول الأدمن</a>
+  </footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -2064,6 +2071,122 @@
                 }
             });
         });
+</script>
+
+<!-- ===================================================== -->
+<!-- ============  ربط Firebase + عرض المحتوى الديناميكي  ============ -->
+<!-- ===================================================== -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+(function () {
+  // إذا ملف الإعدادات firebase-config.js ما انعبى بعد، ما منشغّل شي
+  if (typeof firebase === 'undefined' || !window.firebaseConfig || !window.firebaseConfig.apiKey) {
+    console.warn('لسا ما تم ضبط إعدادات Firebase (firebase-config.js) — المحتوى الديناميكي مش راح يظهر.');
+    return;
+  }
+
+  firebase.initializeApp(window.firebaseConfig);
+  const db = firebase.firestore();
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  function youtubeEmbedUrl(url) {
+    if (!url) return '';
+    // إذا كان المستخدم حط رابط embed جاهز
+    if (url.includes('/embed/')) return url;
+    // استخراج معرف الفيديو من روابط يوتيوب العادية
+    let id = '';
+    const m1 = url.match(/[?&]v=([^&]+)/);
+    const m2 = url.match(/youtu\.be\/([^?&]+)/);
+    if (m1) id = m1[1];
+    else if (m2) id = m2[1];
+    return id ? `https://www.youtube.com/embed/${id}` : url;
+  }
+
+  // ---------- 1) الخطط الدراسية الإضافية ----------
+  function renderPlans(docs) {
+    const container = document.getElementById('dynamic-plans-container');
+    if (!container) return;
+    if (docs.length === 0) { container.innerHTML = ''; return; }
+    container.innerHTML = '<h3 style="margin:20px 0 10px 0; color:#2c3e50;">📌 ملفات مضافة حديثاً</h3>' +
+      docs.map(d => `
+        <div style="padding: 15px; background:#f0f8ff; border-radius:10px; border:2px solid #3498db; margin:10px 0;">
+          <h4 style="margin:0 0 8px 0; color:#2c3e50;">${escapeHtml(d.title)}</h4>
+          ${d.description ? `<p style="margin:0 0 10px 0; color:#666; font-size:0.9em;">${escapeHtml(d.description)}</p>` : ''}
+          <a href="${escapeHtml(d.link)}" target="_blank" style="display:inline-block; background:linear-gradient(135deg,#3498db,#2980b9); color:#fff; padding:10px 20px; border-radius:8px; text-decoration:none; font-weight:bold;">📥 تحميل الملف</a>
+        </div>
+      `).join('');
+  }
+
+  // ---------- 2) فيديوهات الأنشطة الإضافية ----------
+  function renderActivities(docs) {
+    const container = document.getElementById('activities-videos-grid');
+    if (!container) return;
+    docs.forEach(d => {
+      const div = document.createElement('div');
+      div.className = 'content-section';
+      div.style.margin = '0';
+      div.innerHTML = `
+        <h4 style="margin:0 0 10px 0; color:#000;">${escapeHtml(d.title)}</h4>
+        <div class="video-container">
+          <iframe src="${escapeHtml(youtubeEmbedUrl(d.videoUrl))}" allowfullscreen></iframe>
+        </div>`;
+      container.appendChild(div);
+    });
+  }
+
+  // ---------- 3) فيديوهات أعمالي الإضافية ----------
+  function renderWorks(docs) {
+    const container = document.getElementById('works-videos-grid');
+    if (!container) return;
+    docs.forEach(d => {
+      const div = document.createElement('div');
+      div.className = 'content-section';
+      div.innerHTML = `
+        <h3>${escapeHtml(d.title)}</h3>
+        <div class="video-container">
+          <iframe src="${escapeHtml(youtubeEmbedUrl(d.videoUrl))}" allowfullscreen></iframe>
+        </div>`;
+      container.appendChild(div);
+    });
+  }
+
+  // ---------- 4) صور أوراق العمل الإضافية ----------
+  function renderTests(docs) {
+    const container = document.getElementById('tests-images-container');
+    if (!container) return;
+    docs.forEach(d => {
+      const img = document.createElement('img');
+      img.src = d.imageUrl;
+      img.alt = d.title || 'ورقة عمل';
+      img.style.cssText = 'max-width:100%; border-radius:10px; border:2px solid #3498db;';
+      container.appendChild(img);
+    });
+  }
+
+  function loadCollection(name, renderFn) {
+    db.collection(name).orderBy('createdAt', 'desc').get()
+      .then(snap => {
+        const docs = [];
+        snap.forEach(doc => docs.push(doc.data()));
+        renderFn(docs);
+      })
+      .catch(err => console.error('خطأ بتحميل ' + name, err));
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    loadCollection('plans', renderPlans);
+    loadCollection('activities', renderActivities);
+    loadCollection('works', renderWorks);
+    loadCollection('tests', renderTests);
+  });
+})();
 </script>
 
 </body>

@@ -109,9 +109,10 @@
 
     <div class="tabs">
       <div class="tab-btn active" data-tab="tab-plans">📰 الخطط الدراسية</div>
+      <div class="tab-btn" data-tab="tab-lessons">📚 دروسي</div>
       <div class="tab-btn" data-tab="tab-activities">🎬 فيديوهات الأنشطة</div>
       <div class="tab-btn" data-tab="tab-works">🏆 فيديوهات أعمالي</div>
-      <div class="tab-btn" data-tab="tab-tests">🖼️ صور أوراق العمل</div>
+      <div class="tab-btn" data-tab="tab-tests">🖼️ اختباراتي</div>
     </div>
 
     <!-- تبويب الخطط الدراسية -->
@@ -121,12 +122,29 @@
       <input type="text" id="plan-title" placeholder="مثلاً: خطة وحدة الفصول الأربعة" />
       <label>وصف مختصر (اختياري)</label>
       <input type="text" id="plan-desc" placeholder="وصف قصير عن الملف" />
-      <label>الرابط (Google Drive / Docs / أي رابط تحميل)</label>
+      <label>الرابط (Google Drive / Docs / أي رابط تحميل) — اختياري</label>
       <input type="url" id="plan-link" placeholder="https://..." />
+      <label>صورة (اختياري)</label>
+      <input type="file" id="plan-file" accept="image/*" />
       <button onclick="addPlan()">➕ إضافة</button>
       <div id="plan-msg"></div>
       <h3 style="margin-top:30px;">الملفات المضافة</h3>
       <div id="plans-list"></div>
+    </div>
+
+    <!-- تبويب دروسي -->
+    <div id="tab-lessons" class="tab-content card">
+      <h2>إضافة درس جديد</h2>
+      <label>عنوان الدرس</label>
+      <input type="text" id="lesson-title" placeholder="مثلاً: درس حرف الطاء" />
+      <label>صورة الدرس (اختياري)</label>
+      <input type="file" id="lesson-file" accept="image/*" />
+      <label>رابط فيديو (اختياري)</label>
+      <input type="url" id="lesson-video" placeholder="https://www.youtube.com/watch?v=..." />
+      <button onclick="addLesson()">➕ إضافة</button>
+      <div id="lesson-msg"></div>
+      <h3 style="margin-top:30px;">الدروس المضافة</h3>
+      <div id="lessons-list"></div>
     </div>
 
     <!-- تبويب فيديوهات الأنشطة -->
@@ -155,9 +173,9 @@
       <div id="works-list"></div>
     </div>
 
-    <!-- تبويب صور أوراق العمل -->
+    <!-- تبويب اختباراتي -->
     <div id="tab-tests" class="tab-content card">
-      <h2>رفع صورة ورقة عمل جديدة</h2>
+      <h2>رفع صورة اختبار جديدة</h2>
       <label>عنوان الصورة (اختياري)</label>
       <input type="text" id="test-title" placeholder="مثلاً: ورقة عمل حرف الطاء" />
       <label>اختاري الصورة</label>
@@ -173,7 +191,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script>
   if (typeof window.firebaseConfig === 'undefined' || !window.firebaseConfig.apiKey || window.firebaseConfig.apiKey.includes('ضعي')) {
@@ -184,7 +201,34 @@
 
   const auth = () => firebase.auth();
   const db = () => firebase.firestore();
-  const storage = () => firebase.storage();
+  // رفع الصور بيصير عن طريق ImgBB (مجاني بالكامل، بدون بطاقة ائتمان)
+  // مفتاح ImgBB موجود بملف firebase-config.js تحت اسم imgbbApiKey
+  function uploadImageToImgbb(file) {
+    return new Promise((resolve, reject) => {
+      if (!window.firebaseConfig || !window.firebaseConfig.imgbbApiKey || window.firebaseConfig.imgbbApiKey.includes('ضعي')) {
+        reject(new Error('لسا ما تم ضبط مفتاح ImgBB بملف firebase-config.js'));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = reader.result.split(',')[1];
+        const formData = new FormData();
+        formData.append('image', base64);
+        fetch(`https://api.imgbb.com/1/upload?key=${window.firebaseConfig.imgbbApiKey}`, {
+          method: 'POST',
+          body: formData
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data && data.success) resolve(data.data.url);
+            else reject(new Error('فشل رفع الصورة على ImgBB'));
+          })
+          .catch(reject);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
 
   function showMsg(elId, text, type) {
     const el = document.getElementById(elId);
@@ -240,16 +284,30 @@
     const title = document.getElementById('plan-title').value.trim();
     const description = document.getElementById('plan-desc').value.trim();
     const link = document.getElementById('plan-link').value.trim();
-    if (!title || !link) { showMsg('plan-msg', 'الرجاء تعبئة العنوان والرابط', 'error'); return; }
-    db().collection('plans').add({
-      title, description, link, createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      showMsg('plan-msg', 'تمت الإضافة بنجاح ✅', 'success');
-      document.getElementById('plan-title').value = '';
-      document.getElementById('plan-desc').value = '';
-      document.getElementById('plan-link').value = '';
-      loadPlans();
-    }).catch(err => showMsg('plan-msg', 'خطأ: ' + err.message, 'error'));
+    const fileInput = document.getElementById('plan-file');
+    const file = fileInput.files[0];
+    if (!title || (!link && !file)) { showMsg('plan-msg', 'الرجاء تعبئة العنوان، ورابط أو صورة على الأقل', 'error'); return; }
+
+    const save = (imageUrl) => {
+      db().collection('plans').add({
+        title, description, link, imageUrl: imageUrl || null,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        showMsg('plan-msg', 'تمت الإضافة بنجاح ✅', 'success');
+        document.getElementById('plan-title').value = '';
+        document.getElementById('plan-desc').value = '';
+        document.getElementById('plan-link').value = '';
+        fileInput.value = '';
+        loadPlans();
+      }).catch(err => showMsg('plan-msg', 'خطأ: ' + err.message, 'error'));
+    };
+
+    if (file) {
+      showMsg('plan-msg', 'جاري رفع الصورة...', 'success');
+      uploadImageToImgbb(file).then(save).catch(err => showMsg('plan-msg', 'خطأ برفع الصورة: ' + err.message, 'error'));
+    } else {
+      save(null);
+    }
   }
 
   function loadPlans() {
@@ -261,9 +319,56 @@
         const div = document.createElement('div');
         div.className = 'item';
         div.innerHTML = `
+          ${d.imageUrl ? `<img src="${d.imageUrl}" alt="${escapeHtml(d.title)}">` : ''}
           <div class="info"><strong>${escapeHtml(d.title)}</strong><br>
-            <a href="${escapeHtml(d.link)}" target="_blank">${escapeHtml(d.link)}</a></div>
+            ${d.link ? `<a href="${escapeHtml(d.link)}" target="_blank">${escapeHtml(d.link)}</a>` : ''}</div>
           <div class="actions"><button class="danger" onclick="deleteDoc('plans','${doc.id}', loadPlans)">حذف</button></div>`;
+        list.appendChild(div);
+      });
+    });
+  }
+
+  // ---------- دروسي ----------
+  function addLesson() {
+    const title = document.getElementById('lesson-title').value.trim();
+    const videoUrl = document.getElementById('lesson-video').value.trim();
+    const fileInput = document.getElementById('lesson-file');
+    const file = fileInput.files[0];
+    if (!title || (!videoUrl && !file)) { showMsg('lesson-msg', 'الرجاء تعبئة العنوان، وصورة أو رابط فيديو على الأقل', 'error'); return; }
+
+    const save = (imageUrl) => {
+      db().collection('lessons').add({
+        title, videoUrl: videoUrl || null, imageUrl: imageUrl || null,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        showMsg('lesson-msg', 'تمت الإضافة بنجاح ✅', 'success');
+        document.getElementById('lesson-title').value = '';
+        document.getElementById('lesson-video').value = '';
+        fileInput.value = '';
+        loadLessons();
+      }).catch(err => showMsg('lesson-msg', 'خطأ: ' + err.message, 'error'));
+    };
+
+    if (file) {
+      showMsg('lesson-msg', 'جاري رفع الصورة...', 'success');
+      uploadImageToImgbb(file).then(save).catch(err => showMsg('lesson-msg', 'خطأ برفع الصورة: ' + err.message, 'error'));
+    } else {
+      save(null);
+    }
+  }
+
+  function loadLessons() {
+    db().collection('lessons').orderBy('createdAt', 'desc').get().then(snap => {
+      const list = document.getElementById('lessons-list');
+      list.innerHTML = '';
+      snap.forEach(doc => {
+        const d = doc.data();
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `
+          ${d.imageUrl ? `<img src="${d.imageUrl}" alt="${escapeHtml(d.title)}">` : ''}
+          <div class="info"><strong>${escapeHtml(d.title)}</strong>${d.videoUrl ? `<br><a href="${escapeHtml(d.videoUrl)}" target="_blank">رابط الفيديو</a>` : ''}</div>
+          <div class="actions"><button class="danger" onclick="deleteDoc('lessons','${doc.id}', loadLessons)">حذف</button></div>`;
         list.appendChild(div);
       });
     });
@@ -338,11 +443,7 @@
     const file = fileInput.files[0];
     if (!file) { showMsg('test-msg', 'الرجاء اختيار صورة', 'error'); return; }
     showMsg('test-msg', 'جاري رفع الصورة...', 'success');
-    const filePath = 'tests/' + Date.now() + '_' + file.name;
-    const ref = storage().ref().child(filePath);
-    ref.put(file).then(snapshot => {
-      return snapshot.ref.getDownloadURL();
-    }).then(url => {
+    uploadImageToImgbb(file).then(url => {
       return db().collection('tests').add({
         title, imageUrl: url, createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
@@ -379,6 +480,7 @@
 
   function loadAllLists() {
     loadPlans();
+    loadLessons();
     loadActivities();
     loadWorks();
     loadTests();

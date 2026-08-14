@@ -1855,6 +1855,10 @@
             </div>
           </div>
         </div>
+
+        <!-- === بداية دروس مضافة من لوحة الأدمن === -->
+        <div id="dynamic-lessons-container" style="margin-top:30px;"></div>
+        <!-- === نهاية دروس مضافة من لوحة الأدمن === -->
       </section>
     </div>
 
@@ -2117,14 +2121,30 @@
     container.innerHTML = '<h3 style="margin:20px 0 10px 0; color:#2c3e50;">📌 ملفات مضافة حديثاً</h3>' +
       docs.map(d => `
         <div style="padding: 15px; background:#f0f8ff; border-radius:10px; border:2px solid #3498db; margin:10px 0;">
+          ${d.imageUrl ? `<img src="${escapeHtml(d.imageUrl)}" alt="${escapeHtml(d.title)}" style="max-width:100%; border-radius:8px; margin-bottom:10px;">` : ''}
           <h4 style="margin:0 0 8px 0; color:#2c3e50;">${escapeHtml(d.title)}</h4>
           ${d.description ? `<p style="margin:0 0 10px 0; color:#666; font-size:0.9em;">${escapeHtml(d.description)}</p>` : ''}
-          <a href="${escapeHtml(d.link)}" target="_blank" style="display:inline-block; background:linear-gradient(135deg,#3498db,#2980b9); color:#fff; padding:10px 20px; border-radius:8px; text-decoration:none; font-weight:bold;">📥 تحميل الملف</a>
+          ${d.link ? `<a href="${escapeHtml(d.link)}" target="_blank" style="display:inline-block; background:linear-gradient(135deg,#3498db,#2980b9); color:#fff; padding:10px 20px; border-radius:8px; text-decoration:none; font-weight:bold;">📥 تحميل الملف</a>` : ''}
         </div>
       `).join('');
   }
 
-  // ---------- 2) فيديوهات الأنشطة الإضافية ----------
+  // ---------- 2) دروسي الإضافية ----------
+  function renderLessons(docs) {
+    const container = document.getElementById('dynamic-lessons-container');
+    if (!container) return;
+    if (docs.length === 0) { container.innerHTML = ''; return; }
+    container.innerHTML = '<h3 style="margin:20px 0 10px 0; color:#2c3e50;">📚 دروس مضافة حديثاً</h3>' +
+      docs.map(d => `
+        <div class="content-section">
+          <h3>${escapeHtml(d.title)}</h3>
+          ${d.imageUrl ? `<img src="${escapeHtml(d.imageUrl)}" alt="${escapeHtml(d.title)}" style="max-width:100%; border-radius:10px; margin-bottom:10px;">` : ''}
+          ${d.videoUrl ? `<div class="video-container"><iframe src="${escapeHtml(youtubeEmbedUrl(d.videoUrl))}" allowfullscreen></iframe></div>` : ''}
+        </div>
+      `).join('');
+  }
+
+  // ---------- 3) فيديوهات الأنشطة الإضافية ----------
   function renderActivities(docs) {
     const container = document.getElementById('activities-videos-grid');
     if (!container) return;
@@ -2141,7 +2161,7 @@
     });
   }
 
-  // ---------- 3) فيديوهات أعمالي الإضافية ----------
+  // ---------- 4) فيديوهات أعمالي الإضافية ----------
   function renderWorks(docs) {
     const container = document.getElementById('works-videos-grid');
     if (!container) return;
@@ -2157,14 +2177,14 @@
     });
   }
 
-  // ---------- 4) صور أوراق العمل الإضافية ----------
+  // ---------- 5) صور اختباراتي الإضافية ----------
   function renderTests(docs) {
     const container = document.getElementById('tests-images-container');
     if (!container) return;
     docs.forEach(d => {
       const img = document.createElement('img');
       img.src = d.imageUrl;
-      img.alt = d.title || 'ورقة عمل';
+      img.alt = d.title || 'اختبار';
       img.style.cssText = 'max-width:100%; border-radius:10px; border:2px solid #3498db;';
       container.appendChild(img);
     });
@@ -2182,6 +2202,7 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     loadCollection('plans', renderPlans);
+    loadCollection('lessons', renderLessons);
     loadCollection('activities', renderActivities);
     loadCollection('works', renderWorks);
     loadCollection('tests', renderTests);

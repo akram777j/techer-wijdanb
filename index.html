@@ -2113,20 +2113,43 @@
     return id ? `https://www.youtube.com/embed/${id}` : url;
   }
 
+  // دالة مساعدة لتجميع العناصر حسب الفصل ثم الوحدة
+  function groupByTermUnit(docs) {
+    const groups = {}; // key: term||'', value: { unitName: [docs] }
+    docs.forEach(d => {
+      const term = d.term || '';
+      const unit = d.unit || '';
+      if (!groups[term]) groups[term] = {};
+      if (!groups[term][unit]) groups[term][unit] = [];
+      groups[term][unit].push(d);
+    });
+    return groups;
+  }
+
   // ---------- 1) الخطط الدراسية الإضافية ----------
   function renderPlans(docs) {
     const container = document.getElementById('dynamic-plans-container');
     if (!container) return;
     if (docs.length === 0) { container.innerHTML = ''; return; }
-    container.innerHTML = '<h3 style="margin:20px 0 10px 0; color:#2c3e50;">📌 ملفات مضافة حديثاً</h3>' +
-      docs.map(d => `
+
+    const cardHtml = (d) => `
         <div style="padding: 15px; background:#f0f8ff; border-radius:10px; border:2px solid #3498db; margin:10px 0;">
           ${d.imageUrl ? `<img src="${escapeHtml(d.imageUrl)}" alt="${escapeHtml(d.title)}" style="max-width:100%; border-radius:8px; margin-bottom:10px;">` : ''}
           <h4 style="margin:0 0 8px 0; color:#2c3e50;">${escapeHtml(d.title)}</h4>
           ${d.description ? `<p style="margin:0 0 10px 0; color:#666; font-size:0.9em;">${escapeHtml(d.description)}</p>` : ''}
           ${d.link ? `<a href="${escapeHtml(d.link)}" target="_blank" style="display:inline-block; background:linear-gradient(135deg,#3498db,#2980b9); color:#fff; padding:10px 20px; border-radius:8px; text-decoration:none; font-weight:bold;">📥 تحميل الملف</a>` : ''}
-        </div>
-      `).join('');
+        </div>`;
+
+    const groups = groupByTermUnit(docs);
+    let html = '<h3 style="margin:20px 0 10px 0; color:#2c3e50;">📌 ملفات مضافة حديثاً</h3>';
+    Object.keys(groups).forEach(term => {
+      if (term) html += `<h4 style="margin:20px 0 5px 0; color:#3498db;">🗂️ ${escapeHtml(term)}</h4>`;
+      Object.keys(groups[term]).forEach(unit => {
+        if (unit) html += `<h5 style="margin:10px 0 5px 15px; color:#666;">📁 ${escapeHtml(unit)}</h5>`;
+        groups[term][unit].forEach(d => { html += cardHtml(d); });
+      });
+    });
+    container.innerHTML = html;
   }
 
   // ---------- 2) دروسي الإضافية ----------
@@ -2134,14 +2157,24 @@
     const container = document.getElementById('dynamic-lessons-container');
     if (!container) return;
     if (docs.length === 0) { container.innerHTML = ''; return; }
-    container.innerHTML = '<h3 style="margin:20px 0 10px 0; color:#2c3e50;">📚 دروس مضافة حديثاً</h3>' +
-      docs.map(d => `
+
+    const cardHtml = (d) => `
         <div class="content-section">
           <h3>${escapeHtml(d.title)}</h3>
           ${d.imageUrl ? `<img src="${escapeHtml(d.imageUrl)}" alt="${escapeHtml(d.title)}" style="max-width:100%; border-radius:10px; margin-bottom:10px;">` : ''}
           ${d.videoUrl ? `<div class="video-container"><iframe src="${escapeHtml(youtubeEmbedUrl(d.videoUrl))}" allowfullscreen></iframe></div>` : ''}
-        </div>
-      `).join('');
+        </div>`;
+
+    const groups = groupByTermUnit(docs);
+    let html = '<h3 style="margin:20px 0 10px 0; color:#2c3e50;">📚 دروس مضافة حديثاً</h3>';
+    Object.keys(groups).forEach(term => {
+      if (term) html += `<h4 style="margin:20px 0 5px 0; color:#3498db;">🗂️ ${escapeHtml(term)}</h4>`;
+      Object.keys(groups[term]).forEach(unit => {
+        if (unit) html += `<h5 style="margin:10px 0 5px 15px; color:#666;">📁 ${escapeHtml(unit)}</h5>`;
+        groups[term][unit].forEach(d => { html += cardHtml(d); });
+      });
+    });
+    container.innerHTML = html;
   }
 
   // ---------- 3) فيديوهات الأنشطة الإضافية ----------

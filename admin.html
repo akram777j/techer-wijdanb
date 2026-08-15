@@ -39,10 +39,11 @@
   }
   h2 { color: var(--primary); margin-top: 0; border-bottom: 3px solid var(--secondary); padding-bottom: 10px; }
   label { display: block; margin: 12px 0 5px; font-weight: 600; color: var(--primary); }
-  input[type=text], input[type=email], input[type=password], input[type=url], textarea {
+  input[type=text], input[type=email], input[type=password], input[type=url], textarea, select {
     width: 100%; padding: 10px 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;
+    font-family: inherit; background: #fff; color: #333;
   }
-  input:focus, textarea:focus { outline: none; border-color: var(--secondary); }
+  select:focus, input:focus, textarea:focus { outline: none; border-color: var(--secondary); }
   button {
     background: linear-gradient(135deg, var(--secondary), #2980b9);
     color: #fff; border: none; padding: 12px 25px; border-radius: 8px;
@@ -110,6 +111,7 @@
     <div class="tabs">
       <div class="tab-btn active" data-tab="tab-plans">📰 الخطط الدراسية</div>
       <div class="tab-btn" data-tab="tab-lessons">📚 دروسي</div>
+      <div class="tab-btn" data-tab="tab-terms">📂 الفصول والوحدات</div>
       <div class="tab-btn" data-tab="tab-activities">🎬 فيديوهات الأنشطة</div>
       <div class="tab-btn" data-tab="tab-works">🏆 فيديوهات أعمالي</div>
       <div class="tab-btn" data-tab="tab-tests">🖼️ اختباراتي</div>
@@ -120,6 +122,10 @@
       <h2>إضافة ملف/رابط جديد للخطط الدراسية</h2>
       <label>العنوان</label>
       <input type="text" id="plan-title" placeholder="مثلاً: خطة وحدة الفصول الأربعة" />
+      <label>الفصل (اختياري)</label>
+      <select id="plan-term"><option value="">— بدون تصنيف —</option></select>
+      <label>الوحدة (اختياري)</label>
+      <select id="plan-unit"><option value="">— بدون تصنيف —</option></select>
       <label>وصف مختصر (اختياري)</label>
       <input type="text" id="plan-desc" placeholder="وصف قصير عن الملف" />
       <label>الرابط (Google Drive / Docs / أي رابط تحميل) — اختياري</label>
@@ -137,6 +143,10 @@
       <h2>إضافة درس جديد</h2>
       <label>عنوان الدرس</label>
       <input type="text" id="lesson-title" placeholder="مثلاً: درس حرف الطاء" />
+      <label>الفصل (اختياري)</label>
+      <select id="lesson-term"><option value="">— بدون تصنيف —</option></select>
+      <label>الوحدة (اختياري)</label>
+      <select id="lesson-unit"><option value="">— بدون تصنيف —</option></select>
       <label>صورة الدرس (اختياري)</label>
       <input type="file" id="lesson-file" accept="image/*" />
       <label>رابط فيديو (اختياري)</label>
@@ -145,6 +155,27 @@
       <div id="lesson-msg"></div>
       <h3 style="margin-top:30px;">الدروس المضافة</h3>
       <div id="lessons-list"></div>
+    </div>
+
+    <!-- تبويب الفصول والوحدات -->
+    <div id="tab-terms" class="tab-content card">
+      <h2>إضافة فصل جديد</h2>
+      <label>اسم الفصل</label>
+      <input type="text" id="term-name" placeholder="مثلاً: الفصل الثالث" />
+      <button onclick="addTerm()">➕ إضافة فصل</button>
+      <div id="term-msg"></div>
+      <h3 style="margin-top:20px;">الفصول الحالية</h3>
+      <div id="terms-list"></div>
+
+      <h2 style="margin-top:35px;">إضافة وحدة جديدة</h2>
+      <label>الفصل التابعة له</label>
+      <select id="unit-term"></select>
+      <label>اسم الوحدة</label>
+      <input type="text" id="unit-name" placeholder="مثلاً: وحدة الفضاء" />
+      <button onclick="addUnit()">➕ إضافة وحدة</button>
+      <div id="unit-msg"></div>
+      <h3 style="margin-top:20px;">الوحدات الحالية</h3>
+      <div id="units-list"></div>
     </div>
 
     <!-- تبويب فيديوهات الأنشطة -->
@@ -279,9 +310,131 @@
     return div.innerHTML;
   }
 
+  // ---------- الفصول والوحدات ----------
+  const DEFAULT_TERMS = ['الفصل الأول', 'الفصل الثاني'];
+  const DEFAULT_UNITS = {
+    'الفصل الأول': ['أهلًا بالروضة', 'أنا', 'أسرتي', 'الحيوانات'],
+    'الفصل الثاني': ['النباتات', 'الوطن', 'أصدقاء الأرض', 'شكراً روضتي']
+  };
+  let customTerms = [];   // من Firestore
+  let customUnits = [];   // من Firestore: { name, termName }
+
+  function allTermNames() {
+    const custom = customTerms.map(t => t.name);
+    return [...DEFAULT_TERMS, ...custom.filter(n => !DEFAULT_TERMS.includes(n))];
+  }
+
+  function unitNamesForTerm(termName) {
+    const defaults = DEFAULT_UNITS[termName] || [];
+    const custom = customUnits.filter(u => u.termName === termName).map(u => u.name);
+    return [...defaults, ...custom.filter(n => !defaults.includes(n))];
+  }
+
+  function fillTermSelect(selectEl, keepValue) {
+    const current = keepValue !== undefined ? keepValue : selectEl.value;
+    selectEl.innerHTML = '<option value="">— بدون تصنيف —</option>' +
+      allTermNames().map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join('');
+    if (current) selectEl.value = current;
+  }
+
+  function fillUnitSelect(selectEl, termName, keepValue) {
+    const current = keepValue !== undefined ? keepValue : selectEl.value;
+    selectEl.innerHTML = '<option value="">— بدون تصنيف —</option>' +
+      unitNamesForTerm(termName).map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join('');
+    if (current) selectEl.value = current;
+  }
+
+  function refreshAllTermUnitSelects() {
+    fillTermSelect(document.getElementById('plan-term'));
+    fillTermSelect(document.getElementById('lesson-term'));
+    fillTermSelect(document.getElementById('unit-term'), document.getElementById('unit-term').value || allTermNames()[0]);
+    fillUnitSelect(document.getElementById('plan-unit'), document.getElementById('plan-term').value);
+    fillUnitSelect(document.getElementById('lesson-unit'), document.getElementById('lesson-term').value);
+  }
+
+  document.getElementById('plan-term').addEventListener('change', function () {
+    fillUnitSelect(document.getElementById('plan-unit'), this.value, '');
+  });
+  document.getElementById('lesson-term').addEventListener('change', function () {
+    fillUnitSelect(document.getElementById('lesson-unit'), this.value, '');
+  });
+  document.getElementById('unit-term').addEventListener('change', function () {
+    // لا شي إضافي مطلوب هون، بس خليها موجودة لو حبينا نطورها لاحقاً
+  });
+
+  function addTerm() {
+    const name = document.getElementById('term-name').value.trim();
+    if (!name) { showMsg('term-msg', 'الرجاء كتابة اسم الفصل', 'error'); return; }
+    db().collection('terms').add({ name, createdAt: firebase.firestore.FieldValue.serverTimestamp() })
+      .then(() => {
+        showMsg('term-msg', 'تمت الإضافة بنجاح ✅', 'success');
+        document.getElementById('term-name').value = '';
+        loadTermsAndUnits();
+      }).catch(err => showMsg('term-msg', 'خطأ: ' + err.message, 'error'));
+  }
+
+  function addUnit() {
+    const termName = document.getElementById('unit-term').value;
+    const name = document.getElementById('unit-name').value.trim();
+    if (!termName || !name) { showMsg('unit-msg', 'الرجاء اختيار الفصل وكتابة اسم الوحدة', 'error'); return; }
+    db().collection('units').add({ name, termName, createdAt: firebase.firestore.FieldValue.serverTimestamp() })
+      .then(() => {
+        showMsg('unit-msg', 'تمت الإضافة بنجاح ✅', 'success');
+        document.getElementById('unit-name').value = '';
+        loadTermsAndUnits();
+      }).catch(err => showMsg('unit-msg', 'خطأ: ' + err.message, 'error'));
+  }
+
+  function loadTermsAndUnits() {
+    Promise.all([
+      db().collection('terms').orderBy('createdAt', 'desc').get(),
+      db().collection('units').orderBy('createdAt', 'desc').get()
+    ]).then(([termsSnap, unitsSnap]) => {
+      customTerms = [];
+      termsSnap.forEach(doc => customTerms.push({ id: doc.id, ...doc.data() }));
+      customUnits = [];
+      unitsSnap.forEach(doc => customUnits.push({ id: doc.id, ...doc.data() }));
+
+      // عرض الفصول (بس المضافة يدوياً — الفصول الافتراضية ثابتة وما بتنحذف)
+      const termsList = document.getElementById('terms-list');
+      termsList.innerHTML = DEFAULT_TERMS.map(n => `
+        <div class="item"><div class="info"><strong>${escapeHtml(n)}</strong> <span style="color:#999; font-size:0.85em;">(افتراضي)</span></div></div>
+      `).join('') + customTerms.map(t => `
+        <div class="item">
+          <div class="info"><strong>${escapeHtml(t.name)}</strong></div>
+          <div class="actions"><button class="danger" onclick="deleteDoc('terms','${t.id}', loadTermsAndUnits)">حذف</button></div>
+        </div>
+      `).join('');
+
+      // عرض الوحدات
+      const unitsList = document.getElementById('units-list');
+      let html = '';
+      allTermNames().forEach(termName => {
+        const defaults = DEFAULT_UNITS[termName] || [];
+        const custom = customUnits.filter(u => u.termName === termName);
+        if (defaults.length === 0 && custom.length === 0) return;
+        html += `<h4 style="margin:15px 0 8px 0; color:#2c3e50;">${escapeHtml(termName)}</h4>`;
+        html += defaults.map(n => `
+          <div class="item"><div class="info">${escapeHtml(n)} <span style="color:#999; font-size:0.85em;">(افتراضي)</span></div></div>
+        `).join('');
+        html += custom.map(u => `
+          <div class="item">
+            <div class="info">${escapeHtml(u.name)}</div>
+            <div class="actions"><button class="danger" onclick="deleteDoc('units','${u.id}', loadTermsAndUnits)">حذف</button></div>
+          </div>
+        `).join('');
+      });
+      unitsList.innerHTML = html;
+
+      refreshAllTermUnitSelects();
+    });
+  }
+
   // ---------- الخطط الدراسية ----------
   function addPlan() {
     const title = document.getElementById('plan-title').value.trim();
+    const term = document.getElementById('plan-term').value;
+    const unit = document.getElementById('plan-unit').value;
     const description = document.getElementById('plan-desc').value.trim();
     const link = document.getElementById('plan-link').value.trim();
     const fileInput = document.getElementById('plan-file');
@@ -290,7 +443,7 @@
 
     const save = (imageUrl) => {
       db().collection('plans').add({
-        title, description, link, imageUrl: imageUrl || null,
+        title, term: term || null, unit: unit || null, description, link, imageUrl: imageUrl || null,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       }).then(() => {
         showMsg('plan-msg', 'تمت الإضافة بنجاح ✅', 'success');
@@ -316,11 +469,12 @@
       list.innerHTML = '';
       snap.forEach(doc => {
         const d = doc.data();
+        const tag = [d.term, d.unit].filter(Boolean).join(' — ');
         const div = document.createElement('div');
         div.className = 'item';
         div.innerHTML = `
           ${d.imageUrl ? `<img src="${d.imageUrl}" alt="${escapeHtml(d.title)}">` : ''}
-          <div class="info"><strong>${escapeHtml(d.title)}</strong><br>
+          <div class="info"><strong>${escapeHtml(d.title)}</strong>${tag ? ` <span style="color:#999; font-size:0.85em;">(${escapeHtml(tag)})</span>` : ''}<br>
             ${d.link ? `<a href="${escapeHtml(d.link)}" target="_blank">${escapeHtml(d.link)}</a>` : ''}</div>
           <div class="actions"><button class="danger" onclick="deleteDoc('plans','${doc.id}', loadPlans)">حذف</button></div>`;
         list.appendChild(div);
@@ -331,6 +485,8 @@
   // ---------- دروسي ----------
   function addLesson() {
     const title = document.getElementById('lesson-title').value.trim();
+    const term = document.getElementById('lesson-term').value;
+    const unit = document.getElementById('lesson-unit').value;
     const videoUrl = document.getElementById('lesson-video').value.trim();
     const fileInput = document.getElementById('lesson-file');
     const file = fileInput.files[0];
@@ -338,7 +494,7 @@
 
     const save = (imageUrl) => {
       db().collection('lessons').add({
-        title, videoUrl: videoUrl || null, imageUrl: imageUrl || null,
+        title, term: term || null, unit: unit || null, videoUrl: videoUrl || null, imageUrl: imageUrl || null,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       }).then(() => {
         showMsg('lesson-msg', 'تمت الإضافة بنجاح ✅', 'success');
@@ -363,11 +519,12 @@
       list.innerHTML = '';
       snap.forEach(doc => {
         const d = doc.data();
+        const tag = [d.term, d.unit].filter(Boolean).join(' — ');
         const div = document.createElement('div');
         div.className = 'item';
         div.innerHTML = `
           ${d.imageUrl ? `<img src="${d.imageUrl}" alt="${escapeHtml(d.title)}">` : ''}
-          <div class="info"><strong>${escapeHtml(d.title)}</strong>${d.videoUrl ? `<br><a href="${escapeHtml(d.videoUrl)}" target="_blank">رابط الفيديو</a>` : ''}</div>
+          <div class="info"><strong>${escapeHtml(d.title)}</strong>${tag ? ` <span style="color:#999; font-size:0.85em;">(${escapeHtml(tag)})</span>` : ''}${d.videoUrl ? `<br><a href="${escapeHtml(d.videoUrl)}" target="_blank">رابط الفيديو</a>` : ''}</div>
           <div class="actions"><button class="danger" onclick="deleteDoc('lessons','${doc.id}', loadLessons)">حذف</button></div>`;
         list.appendChild(div);
       });
@@ -479,6 +636,7 @@
   }
 
   function loadAllLists() {
+    loadTermsAndUnits();
     loadPlans();
     loadLessons();
     loadActivities();
